@@ -1,0 +1,36 @@
+simulation TestSimulation {
+	start := "ConfirmCall;OptForRecipeFinder;OptForSHARecipe;OptForTVRecipe;Restart";
+	goal := "ConfirmCall;Restart;Review;selectRecipe";
+
+    constructor TestConstructor {
+        # $input and $index are standard variables
+        # $input contains the current line, pre and do get called for each line in the given file
+        # $index contains the current line number, starting with 0
+        pre {
+            if(input[0] == "#") {
+                var metaName := "GoalRecipe" + $index;
+                var partialName := $suffix + $index;
+                create meta(metaName, input[1:]);
+                create partialtask("Partial" + $index) {
+                    @GoalRecipe := @metaName; # @ on the right side is a pointer to the meta var
+                }
+                inc $index;
+            }
+        }
+        do {
+            var partialName := "Partial" + $index;
+            if(input[0] == "#") {
+                create task(input[1:]) extending partialName;
+                inc $index;
+            } else {
+                if(input == "zurück") {
+                    create task("Neustarten") extending partialName;
+                } else {
+                    create task(input) extending partialName;
+                }
+            }
+        }
+    }
+
+    call TestConstructor("C:\\Users\\Timo\\IdeaProjects\\SimulationFileParser\\modeltasks.txt", $suffix := "Partial");
+}

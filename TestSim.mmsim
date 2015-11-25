@@ -1,0 +1,61 @@
+simulation LTMCTest {
+	start := "ConfirmCall;OptForRecipeFinder;OptForSHARecipe;OptForTVRecipe;Restart";
+	goal := "ConfirmCall;Restart;Review;selectRecipe";
+	autocomplete := false;
+	loop := 3;
+
+	@GoalRecipe1 := "Tomatensalat";
+	@GoalRecipe2 := "Altdeutscher Sauerbraten";
+
+	partialtask TaskComplex1 {
+		@GoalRecipe := GoalRecipe1;
+	}
+
+	partialtask TaskComplex2 {
+		@GoalRecipe := GoalRecipe2;
+	}
+
+	task extends TaskComplex1{
+		knowledge := ["Rezeptsuche starten"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Vorspeise"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Italienisch"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Suche starten"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Tomatensalat"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Vorspeise"];
+	}
+
+	task extends TaskComplex1 {
+		knowledge := ["Neustart"];
+	}
+
+	task extends TaskComplex2 {
+		knowledge := ["Rezeptsuche starten"];
+	}
+
+	task extends TaskComplex2 {
+		knowledge := ["Hauptgericht"];
+	}
+
+	task extends TaskComplex2 {
+		knowledge := ["Suche starten"];
+	}
+
+	task extends TaskComplex2 {
+		knowledge := ["Altdeutscher Sauerbraten"];
+	}
+}
